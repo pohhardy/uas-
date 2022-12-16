@@ -1,14 +1,8 @@
 <?php
 
+use App\Http\Controllers\ViewPeminjamanBuku;
+use App\Http\Controllers\PinjamanBukuController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\payslipController;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Hash;
-
-use App\Http\Controllers\Admin\loginRegistrationController;
-
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,53 +15,16 @@ use App\Models\User;
 |
 */
 
-Route::get('/login', function() {
-    if (count(User::all()) == 0){
-        return redirect('/register');
-    }
-    if (session()->has('user')) {
-        return redirect('/');
-    }
-    return view('login');
-});
-
-Route::get('/register', function() {
-    if (count(User::all()) == 0){
-        return view('register')->with('is_admin', true);
-    }
-    return view('register')->with('is_admin', false);
-});
-
-Route::post('/registration', function(Request $request){
-    return loginRegistrationController::register($request);
-});
-
-Route::post('/process', function(Request $request) {
-    return loginRegistrationController::login($request);
-});
-
-Route::get('/contact', function () {
-    return view('contact');
-});
-
 Route::get('/', function () {
-    if (session()->has('user')) {
-        return view('layouts.main');
-    }
-    return view('layouts.main');
-});
-
-Route::resource('admin/user', 'App\Http\Controllers\Admin\userController');
-Route::resource('admin/employee', 'App\Http\Controllers\Admin\employeeController');
-Route::resource('admin/contract', 'App\Http\Controllers\Admin\contractController');
-Route::resource('admin/attendance', 'App\Http\Controllers\Admin\attendanceController');
-Route::resource('admin/bpjs_data', 'App\Http\Controllers\Admin\bpjs_dataController');
-Route::resource('admin/payslip', 'App\Http\Controllers\Admin\payslipController');
-
-Route::get('admin/compute_payslip',
-function(Request $request){ 
-    return payslipController::compute($request);
+    return view('layouts.app2');
 });
 
 
-Route::resource('admin/parents', 'App\Http\Controllers\Admin\parentsController');
+
+Route::resource('admin/mahasiswa', 'App\Http\Controllers\Admin\mahasiswaController');
+Route::resource('admin/buku', 'App\Http\Controllers\Admin\bukuController');
+Route::resource('admin/admin', 'App\Http\Controllers\Admin\AdminController');
+Route::get('/laporan/v_peminjamanbuku', [PinjamanBukuController::class, 'index']);
+Route::get('/laporan/v_peminjamanbuku/print', [PinjamanBukuController::class, 'print']);
+
+Route::resource('admin/status_pinjaman', 'App\Http\Controllers\Admin\status_pinjamanController');
